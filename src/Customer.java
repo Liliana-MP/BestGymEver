@@ -5,6 +5,7 @@ public class Customer {
     private String socialSecurityNumber;
     private String lastPay;
 
+
     public Customer(){
 
     }
@@ -27,15 +28,12 @@ public class Customer {
         return lastPay;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSocialSecurityNumber(String socialSecurityNumber) {
-        this.socialSecurityNumber = socialSecurityNumber;
-    }
-
-    public void setLastPay(String lastPay) {
-        this.lastPay = lastPay;
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "name='" + name + '\'' +
+                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
+                ", lastPay='" + lastPay + '\'' +
+                '}';
     }
 }
