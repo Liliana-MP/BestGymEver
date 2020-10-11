@@ -1,11 +1,9 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import javax.swing.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,22 +11,13 @@ public class BestGymEver_Test {
     BestGymEver bestGymEver = new BestGymEver();
     List<Customer> customerListTest = new ArrayList<>();
 
-    @Test
-    public final void settersAndGetters(){
-    }
-
-   /* @Test
-    public final void getFile() {
-        assertTrue(bestGymEver.getFile("/s") != null);
-        assertFalse(bestGymEver.getFile() == null);
-    }*/
 
     @Test
-    public final void getDataFromFileAndPutInListTest()  {
+    public final void getDataFromFileAndPutInListTest() {
         bestGymEver.getDataFromFileAndPutInList("/customers.txt");
         customerListTest = bestGymEver.getCustomerList();
 
-        for (Customer customer: customerListTest) {
+        for (Customer customer : customerListTest) {
             assertNotNull(customer);
         }
 
@@ -43,24 +32,33 @@ public class BestGymEver_Test {
     }
 
     @Test
-    public final void searchCustomerTest(){
+    public final void searchCustomerTest() {
+        bestGymEver.test = true;
+        bestGymEver.getDataFromFileAndPutInList("customers.txt");
+        customerListTest = bestGymEver.getCustomerList();
+
         String input = "Diamanda Djedi";
-        bestGymEver.searchCustomer(input);
 
-            input = "Liliana Pitra";
-            assertNull(bestGymEver.searchCustomer(input));
-        }
+        Customer customer = bestGymEver.searchCustomer(input);
+        assertEquals(input, customer.getName());
 
+        input = "Liliana Pitra";
+        assertNull(bestGymEver.searchCustomer(input));
     }
 
-
-
-   /* @Test
-    public final void didCustomerPay(){
+    @Test
+    public final void didCustomerPayTest(){
+        bestGymEver.test = true;
         LocalDate testDate = LocalDate.of(2020,10,9);
         Customer customer = new Customer("", "", "2019-07-01");
+        LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
+        if (testDate.isBefore(customersLastPayment)) {
+            assertEquals(testDate, customersLastPayment);
+            JOptionPane.showMessageDialog(null, customer.getName() + " är kund");
 
-        assertEquals(customer.getLastPay(), bestGymEver.dateOneYearAgo());
-
-    }*/
+        } else if (testDate.isAfter(customersLastPayment)) {
+            assertNotEquals(testDate, customersLastPayment);
+        }
+    }
+}
 

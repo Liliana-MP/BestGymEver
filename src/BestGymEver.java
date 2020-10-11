@@ -12,21 +12,20 @@ import java.util.Scanner;
 public class BestGymEver {
 
     private List<Customer> customerList = new ArrayList<>();
+    public boolean test = false;
 
     public List<Customer> getCustomerList() {
         return customerList;
     }
 
-    public void getDataFromFileAndPutInList (String fileName){
+    public void getDataFromFileAndPutInList(String fileName) {
         File file = new File("src/" + fileName);
         Scanner scanner = null;
         try {
-            scanner  = new Scanner(file);
-        }
-        catch (FileNotFoundException e) {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
             System.out.println("Hittar ingen fil");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error");
         }
 
@@ -39,9 +38,9 @@ public class BestGymEver {
 
     }
 
-    public String getInputFromUser(){
+    public String getInputFromUser() {
         String input = JOptionPane.showInputDialog("Skriv kundens personnummer eller namn");
-        if (input == null){
+        if (input == null) {
             JOptionPane.showMessageDialog(null, "Programmet avslutas");
             System.exit(0);
         }
@@ -50,25 +49,36 @@ public class BestGymEver {
         return input;
     }
 
-    public Customer searchCustomer (String input){
+    public Customer searchCustomer(String input) {
 
         for (Customer customer : customerList) {
-
             if (input.equals(customer.getSocialSecurityNumber()) || input.equalsIgnoreCase(customer.getName())) {
-                // Parsar datum
-                LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
-                if (dateOneYearAgo().isBefore(customersLastPayment)){
-                    JOptionPane.showMessageDialog(null, customer.getName() + " är kund");
-                    return customer;
-                }
-                else if (dateOneYearAgo().isAfter(customersLastPayment)){
-                    JOptionPane.showMessageDialog(null, customer.getName() +
-                            " har inte betalat på mer än 1 år");
-                }
+                return customer;
             }
-
+        }
+        if (!test){
+            ImageIcon imageIcon = new ImageIcon(BestGymEver.class.getResource("/giphy.gif"));
+            JOptionPane.showMessageDialog(null, "Finns inte i registret", "Ghost",
+                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
         }
         return null;
+    }
+
+    public void didCustomerPay(Customer customer) {
+        // Parsar datum
+        LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
+        if (dateOneYearAgo().isBefore(customersLastPayment)) {
+            if (!test) {
+                JOptionPane.showMessageDialog(null, customer.getName() + " är kund");
+                saveGymVisit(customer);
+            }
+
+        } else if (dateOneYearAgo().isAfter(customersLastPayment)) {
+            if (!test) {
+                JOptionPane.showMessageDialog(null, customer.getName() +
+                        " har inte betalat på mer än 1 år");
+            }
+        }
     }
 
     public void saveGymVisit(Customer customer) {
@@ -78,19 +88,17 @@ public class BestGymEver {
                 (new FileWriter("CustomerLog/" + customer.getSocialSecurityNumber() + ".txt", true))) {
 
             //Skriver till fil
-           bufferedWriter.write("Customer: " + customer.getName() + " " + customer.getSocialSecurityNumber() +  "\n"
-                   + LocalDate.now() + "\n" + "\n");
-        }
-        catch (FileAlreadyExistsException e){
+            bufferedWriter.write("Customer: " + customer.getName() + " " + customer.getSocialSecurityNumber() + "\n"
+                    + LocalDate.now() + "\n" + "\n");
+        } catch (FileAlreadyExistsException e) {
             System.out.println("Filen finns redan");
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error");
         }
 
     }
 
-    public LocalDate dateOneYearAgo(){
+    public LocalDate dateOneYearAgo() {
         LocalDate dateNow = LocalDate.now();
         return dateNow.minusYears(1);
     }
@@ -102,12 +110,7 @@ public class BestGymEver {
         getDataFromFileAndPutInList(customerFilePath);
         Customer customer = searchCustomer(input);
         if (customer != null){
-            saveGymVisit(customer);
-        }
-        else {
-            ImageIcon imageIcon = new ImageIcon(BestGymEver.class.getResource("/giphy.gif"));
-            JOptionPane.showMessageDialog(null, "Finns inte i registret", "Ghost",
-                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
+            didCustomerPay(customer);
         }
     }
 }
