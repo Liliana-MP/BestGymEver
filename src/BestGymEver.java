@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// TODO Försök bryta ut metoden searchCustomer
 // TODO Skapa testmetoder för att kolla ifall kund betalat under ett år
 // TODO Fixa testmetoder
 
