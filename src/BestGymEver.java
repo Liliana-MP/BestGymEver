@@ -6,39 +6,57 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// TODO Försök bryta ut metoden searchCustomer
+// TODO Skapa testmetoder för att kolla ifall kund betalat under ett år
+// TODO Fixa testmetoder
+
 public class BestGymEver {
 
-    public List<Customer> getDataFromFileAndPutInList (String fileName){
+    private List<Customer> customerList = new ArrayList<>();
+
+    public List<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void getDataFromFileAndPutInList (String fileName){
         File file = new File("src/" + fileName);
         Scanner scanner = null;
         try {
             scanner  = new Scanner(file);
         }
-        catch (FileNotFoundException f) {
+        catch (FileNotFoundException e) {
             System.out.println("Hittar ingen fil");
         }
         catch (Exception e){
             System.out.println("Error");
         }
 
-        List<Customer> customerList = new ArrayList<>();
         while (scanner.hasNextLine()) {
             String socialSecurityNumber = scanner.next().replace(",", "");
             String name = scanner.nextLine().trim();
             String lastPay = scanner.nextLine().trim();
             customerList.add(new Customer(name, socialSecurityNumber, lastPay));
         }
-        return customerList;
+
     }
 
-    public Customer searchCustomer (List<Customer> customerList){
-
+    public String getInputFromUser(){
         String input = JOptionPane.showInputDialog("Skriv kundens personnummer eller namn");
+        if (input == null){
+            JOptionPane.showMessageDialog(null, "Programmet avslutas");
+            System.exit(0);
+        }
+
         input = input.trim();
+        return input;
+    }
+
+    public Customer searchCustomer (String input){
 
         for (Customer customer : customerList) {
 
             if (input.equals(customer.getSocialSecurityNumber()) || input.equalsIgnoreCase(customer.getName())) {
+                // Parsar datum
                 LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
                 if (dateOneYearAgo().isBefore(customersLastPayment)){
                     JOptionPane.showMessageDialog(null, customer.getName() + " är kund");
@@ -48,17 +66,19 @@ public class BestGymEver {
                     JOptionPane.showMessageDialog(null, customer.getName() +
                             " har inte betalat på mer än 1 år");
                 }
-
             }
+
         }
         return null;
     }
 
-    public void saveGymVisit(Customer customer) throws IOException {
-
+    public void saveGymVisit(Customer customer) {
+        //Try with resources
+        //Skapar ny fil för varje kund
         try (BufferedWriter bufferedWriter = new BufferedWriter
                 (new FileWriter("CustomerLog/" + customer.getSocialSecurityNumber() + ".txt", true))) {
 
+            //Skriver till fil
            bufferedWriter.write("Customer: " + customer.getName() + " " + customer.getSocialSecurityNumber() +  "\n"
                    + LocalDate.now() + "\n" + "\n");
         }
@@ -78,16 +98,17 @@ public class BestGymEver {
 
     public void boot() {
         String customerFilePath = "/customers.txt";
-        List<Customer> customerList = getDataFromFileAndPutInList(customerFilePath);
-        Customer customer = searchCustomer(customerList);
-        if (customer != null){
-            try {
-                saveGymVisit(customer);
-            }
-            catch (IOException e){
-                System.out.println("Error");
-            }
+        String input = getInputFromUser();
 
+        getDataFromFileAndPutInList(customerFilePath);
+        Customer customer = searchCustomer(input);
+        if (customer != null){
+            saveGymVisit(customer);
+        }
+        else {
+            ImageIcon imageIcon = new ImageIcon(BestGymEver.class.getResource("/giphy.gif"));
+            JOptionPane.showMessageDialog(null, "Finns inte i registret", "Ghost",
+                    JOptionPane.INFORMATION_MESSAGE, imageIcon);
         }
     }
 }

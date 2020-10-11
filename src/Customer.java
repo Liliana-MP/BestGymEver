@@ -10,6 +10,10 @@ public class Customer {
 
     }
 
+    public void setLastPay(String lastPay) {
+        this.lastPay = lastPay;
+    }
+
     public Customer(String name, String socialSecurityNumber, String lastPay){
         this.name = name;
         this.socialSecurityNumber = socialSecurityNumber;
