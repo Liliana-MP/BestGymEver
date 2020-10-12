@@ -20,7 +20,6 @@ public class BestGymEver {
     }
 
     public void getDataFromFileAndPutInList(Path customerFilePath) {
-
         File file = new File(String.valueOf(customerFilePath));
         Scanner scanner = null;
         try {
@@ -42,16 +41,22 @@ public class BestGymEver {
 
     }
 
-    public String getInputFromUser() {
+    public String getInputFromUser(String testParameter) {
+        String input = "";
+        if (test) {
+            input = testParameter;
+        }
+        else {
+            input = JOptionPane.showInputDialog("Skriv kundens personnummer eller namn");
+            if (input == null) {
+                JOptionPane.showMessageDialog(null, "Programmet avslutas");
+                System.exit(0);
+            }
+            input = input.trim();
 
-        String input = JOptionPane.showInputDialog("Skriv kundens personnummer eller namn");
-
-        if (input == null) {
-            JOptionPane.showMessageDialog(null, "Programmet avslutas");
-            System.exit(0);
         }
 
-        input = input.trim();
+
         return input;
     }
 
@@ -70,21 +75,24 @@ public class BestGymEver {
         return null;
     }
 
-    public void didCustomerPay(Customer customer) {
+    public boolean didCustomerPay(Customer customer) {
         // Parsar datum
         LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
-        if (dateOneYearAgo().isBefore(customersLastPayment)) {
+        if (dateOneYearAgo().isBefore(customersLastPayment) || dateOneYearAgo().equals(customersLastPayment)) {
             if (!test) {
                 JOptionPane.showMessageDialog(null, customer.getName() + " är kund");
                 saveGymVisit(customer);
             }
-
-        } else if (dateOneYearAgo().isAfter(customersLastPayment)) {
+            return true;
+        } else {
             if (!test) {
                 JOptionPane.showMessageDialog(null, customer.getName() +
                         " har inte betalat på mer än 1 år");
+
             }
+            return false;
         }
+
     }
 
     public void saveGymVisit(Customer customer) {
@@ -112,7 +120,7 @@ public class BestGymEver {
 
     public void boot() {
         Path customerFilePath = Paths.get("src/customers.txt");
-        String input = getInputFromUser();
+        String input = getInputFromUser("");
 
         getDataFromFileAndPutInList(customerFilePath);
         Customer customer = searchCustomer(input);
