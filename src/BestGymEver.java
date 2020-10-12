@@ -1,13 +1,13 @@
 import javax.swing.*;
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// TODO Skapa testmetoder för att kolla ifall kund betalat under ett år
-// TODO Fixa testmetoder
 
 public class BestGymEver {
 
@@ -15,11 +15,12 @@ public class BestGymEver {
     public boolean test = false;
 
     public List<Customer> getCustomerList() {
+
         return customerList;
     }
 
-    public void getDataFromFileAndPutInList(String fileName) {
-        File file = new File("src/" + fileName);
+    public void getDataFromFileAndPutInList(Path customerFilePath) {
+        File file = new File("src/" + customerFilePath);
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
@@ -44,7 +45,6 @@ public class BestGymEver {
             JOptionPane.showMessageDialog(null, "Programmet avslutas");
             System.exit(0);
         }
-
         input = input.trim();
         return input;
     }
@@ -104,7 +104,7 @@ public class BestGymEver {
     }
 
     public void boot() {
-        String customerFilePath = "/customers.txt";
+        Path customerFilePath = Paths.get("customers.txt");
         String input = getInputFromUser();
 
         getDataFromFileAndPutInList(customerFilePath);

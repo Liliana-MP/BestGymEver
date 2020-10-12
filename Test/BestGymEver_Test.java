@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BestGymEver_Test {
     BestGymEver bestGymEver = new BestGymEver();
     List<Customer> customerListTest = new ArrayList<>();
+    Path path = Paths.get("/customers.txt");
 
 
     @Test
     public final void getDataFromFileAndPutInListTest() {
-        bestGymEver.getDataFromFileAndPutInList("/customers.txt");
+        bestGymEver.getDataFromFileAndPutInList(path);
         customerListTest = bestGymEver.getCustomerList();
 
         for (Customer customer : customerListTest) {
@@ -34,7 +37,7 @@ public class BestGymEver_Test {
     @Test
     public final void searchCustomerTest() {
         bestGymEver.test = true;
-        bestGymEver.getDataFromFileAndPutInList("customers.txt");
+        bestGymEver.getDataFromFileAndPutInList(path);
         customerListTest = bestGymEver.getCustomerList();
 
         String input = "Diamanda Djedi";
