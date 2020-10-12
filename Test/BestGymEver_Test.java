@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BestGymEver_Test {
     BestGymEver bestGymEver = new BestGymEver();
     List<Customer> customerListTest = new ArrayList<>();
-    Path path = Paths.get("/customers.txt");
+    Path path = Paths.get("src/customers.txt");
 
 
     @Test

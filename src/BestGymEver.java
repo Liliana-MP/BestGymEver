@@ -20,13 +20,16 @@ public class BestGymEver {
     }
 
     public void getDataFromFileAndPutInList(Path customerFilePath) {
-        File file = new File("src/" + customerFilePath);
+
+        File file = new File(String.valueOf(customerFilePath));
         Scanner scanner = null;
         try {
             scanner = new Scanner(file);
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             System.out.println("Hittar ingen fil");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("Error");
         }
 
@@ -40,11 +43,14 @@ public class BestGymEver {
     }
 
     public String getInputFromUser() {
+
         String input = JOptionPane.showInputDialog("Skriv kundens personnummer eller namn");
+
         if (input == null) {
             JOptionPane.showMessageDialog(null, "Programmet avslutas");
             System.exit(0);
         }
+
         input = input.trim();
         return input;
     }
@@ -88,8 +94,9 @@ public class BestGymEver {
                 (new FileWriter("CustomerLog/" + customer.getSocialSecurityNumber() + ".txt", true))) {
 
             //Skriver till fil
-            bufferedWriter.write("Customer: " + customer.getName() + " " + customer.getSocialSecurityNumber() + "\n"
-                    + LocalDate.now() + "\n" + "\n");
+            bufferedWriter.write("Customer: " + customer.getName() + " " +
+                    customer.getSocialSecurityNumber() + "\n" + LocalDate.now() + "\n" + "\n");
+
         } catch (FileAlreadyExistsException e) {
             System.out.println("Filen finns redan");
         } catch (Exception e) {
@@ -104,7 +111,7 @@ public class BestGymEver {
     }
 
     public void boot() {
-        Path customerFilePath = Paths.get("customers.txt");
+        Path customerFilePath = Paths.get("src/customers.txt");
         String input = getInputFromUser();
 
         getDataFromFileAndPutInList(customerFilePath);
