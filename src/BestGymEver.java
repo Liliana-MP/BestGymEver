@@ -21,22 +21,20 @@ public class BestGymEver {
 
     public void getDataFromFileAndPutInList(Path customerFilePath) {
         File file = new File(String.valueOf(customerFilePath));
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(file);
+
+        try (Scanner scanner = new Scanner(file)){
+            while (scanner.hasNextLine()) {
+                String socialSecurityNumber = scanner.next().replace(",", "");
+                String name = scanner.nextLine().trim();
+                String lastPay = scanner.nextLine().trim();
+                customerList.add(new Customer(name, socialSecurityNumber, lastPay));
+            }
         }
         catch (FileNotFoundException e) {
             System.out.println("Hittar ingen fil");
         }
         catch (Exception e) {
             System.out.println("Error");
-        }
-
-        while (scanner.hasNextLine()) {
-            String socialSecurityNumber = scanner.next().replace(",", "");
-            String name = scanner.nextLine().trim();
-            String lastPay = scanner.nextLine().trim();
-            customerList.add(new Customer(name, socialSecurityNumber, lastPay));
         }
 
     }
@@ -55,8 +53,6 @@ public class BestGymEver {
             input = input.trim();
 
         }
-
-
         return input;
     }
 
@@ -84,15 +80,14 @@ public class BestGymEver {
                 saveGymVisit(customer);
             }
             return true;
+
         } else {
             if (!test) {
                 JOptionPane.showMessageDialog(null, customer.getName() +
                         " har inte betalat på mer än 1 år");
-
             }
             return false;
         }
-
     }
 
     public void saveGymVisit(Customer customer) {
@@ -110,7 +105,6 @@ public class BestGymEver {
         } catch (Exception e) {
             System.out.println("Error");
         }
-
     }
 
     public LocalDate dateOneYearAgo() {
