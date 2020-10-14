@@ -13,6 +13,7 @@ public class BestGymEver {
 
     private List<Customer> customerList = new ArrayList<>();
     public boolean test = false;
+    private ImageIcon imageIcon;
 
     public List<Customer> getCustomerList() {
 
@@ -36,7 +37,6 @@ public class BestGymEver {
         catch (Exception e) {
             System.out.println("Error");
         }
-
     }
 
     public String getInputFromUser(String testParameter) {
@@ -45,7 +45,7 @@ public class BestGymEver {
             input = testParameter;
         }
         else {
-            input = JOptionPane.showInputDialog("Skriv kundens personnummer eller namn");
+            input = JOptionPane.showInputDialog("Skriv kundens personnummer(tio siffror) eller namn");
             if (input == null) {
                 JOptionPane.showMessageDialog(null, "Programmet avslutas");
                 System.exit(0);
@@ -64,8 +64,8 @@ public class BestGymEver {
             }
         }
         if (!test){
-            ImageIcon imageIcon = new ImageIcon(BestGymEver.class.getResource("/giphy.gif"));
-            JOptionPane.showMessageDialog(null, "Finns inte i registret", "Ghost",
+            imageIcon = new ImageIcon(BestGymEver.class.getResource("/giphy.gif"));
+            JOptionPane.showMessageDialog(null, "Finns inte i registret", "Error",
                     JOptionPane.INFORMATION_MESSAGE, imageIcon);
         }
         return null;
@@ -76,15 +76,22 @@ public class BestGymEver {
         LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
         if (dateOneYearAgo().isBefore(customersLastPayment) || dateOneYearAgo().equals(customersLastPayment)) {
             if (!test) {
-                JOptionPane.showMessageDialog(null, customer.getName() + " är kund");
+                imageIcon = new ImageIcon(BestGymEver.class.getResource("/gym.gif"));
+
+                JOptionPane.showMessageDialog(null, customer.getName() + " är kund",
+                        "Kund", JOptionPane.PLAIN_MESSAGE, imageIcon);
+
                 saveGymVisit(customer);
+                System.out.println("Sparade " + customer.getName() + "s" + " träningspass");
             }
             return true;
 
         } else {
             if (!test) {
+                imageIcon = new ImageIcon(BestGymEver.class.getResource("/money.gif"));
+
                 JOptionPane.showMessageDialog(null, customer.getName() +
-                        " har inte betalat på mer än 1 år");
+                        " har inte betalat på mer än 1 år", "Error", JOptionPane.INFORMATION_MESSAGE, imageIcon);
             }
             return false;
         }

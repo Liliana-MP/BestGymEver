@@ -47,7 +47,14 @@ public class BestGymEver_Test {
         Customer customer = bestGymEver.searchCustomer(input);
         assertEquals(input, customer.getName());
 
-        input = "Liliana Pitra";
+    }
+
+    @Test
+    public final void searchForCustomerThatDoesntExist(){
+        bestGymEver.test = true;
+        bestGymEver.getDataFromFileAndPutInList(path);
+        customerListTest = bestGymEver.getCustomerList();
+        String input = "Liliana Pitra";
         assertNull(bestGymEver.searchCustomer(input));
     }
 
