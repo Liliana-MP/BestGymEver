@@ -23,7 +23,7 @@ public class BestGymEver {
         File file = new File(String.valueOf(customerFilePath));
 
         try (Scanner scanner = new Scanner(file)){
-            while (scanner.hasNextLine()) {
+            while (scanner.hasNext()) {
                 String socialSecurityNumber = scanner.next().replace(",", "");
                 String name = scanner.nextLine().trim();
                 String lastPay = scanner.nextLine().trim();
