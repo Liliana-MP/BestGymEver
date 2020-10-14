@@ -1,17 +1,10 @@
-import java.util.Scanner;
-
 public class Customer {
     private String name;
     private String socialSecurityNumber;
     private String lastPay;
 
-
     public Customer(){
 
-    }
-
-    public void setLastPay(String lastPay) {
-        this.lastPay = lastPay;
     }
 
     public Customer(String name, String socialSecurityNumber, String lastPay){
@@ -32,12 +25,4 @@ public class Customer {
         return lastPay;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "name='" + name + '\'' +
-                ", socialSecurityNumber='" + socialSecurityNumber + '\'' +
-                ", lastPay='" + lastPay + '\'' +
-                '}';
-    }
 }

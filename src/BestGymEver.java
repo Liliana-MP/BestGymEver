@@ -45,7 +45,7 @@ public class BestGymEver {
             input = testParameter;
         }
         else {
-            input = JOptionPane.showInputDialog("Skriv kundens personnummer(tio siffror) eller namn");
+            input = JOptionPane.showInputDialog("Skriv kundens personnummer (tio siffror) eller namn");
             if (input == null) {
                 JOptionPane.showMessageDialog(null, "Programmet avslutas");
                 System.exit(0);
@@ -97,7 +97,7 @@ public class BestGymEver {
         }
     }
 
-    public void saveGymVisit(Customer customer) {
+    public boolean saveGymVisit(Customer customer) {
         //Try with resources
         //Skapar ny fil för varje kund
         try (BufferedWriter bufferedWriter = new BufferedWriter
@@ -106,11 +106,10 @@ public class BestGymEver {
             //Skriver till fil
             bufferedWriter.write("Customer: " + customer.getName() + " " +
                     customer.getSocialSecurityNumber() + "\n" + LocalDate.now() + "\n" + "\n");
-
-        } catch (FileAlreadyExistsException e) {
-            System.out.println("Filen finns redan");
-        } catch (Exception e) {
-            System.out.println("Error");
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

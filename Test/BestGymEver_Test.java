@@ -46,7 +46,6 @@ public class BestGymEver_Test {
 
         Customer customer = bestGymEver.searchCustomer(input);
         assertEquals(input, customer.getName());
-
     }
 
     @Test
@@ -74,12 +73,19 @@ public class BestGymEver_Test {
         assertTrue(checkDate);
     }
 
+
     @Test
     public final void didCustomerPayMoreThanOneYearAgoTest(){
         bestGymEver.test = true;
         Customer customer = new Customer("", "", LocalDate.now().minusYears(3).toString());
         boolean checkDate = bestGymEver.didCustomerPay(customer);
         assertFalse(checkDate);
+    }
+
+    @Test
+    public final void saveGymVisitTest(){
+        Customer customer = new Customer("Test", "Test", "2020-10-10");
+        assertTrue(bestGymEver.saveGymVisit(customer));
     }
 
     @Test
@@ -96,8 +102,8 @@ public class BestGymEver_Test {
         bestGymEver.test = true;
         String input = null;
 
-        assertNull(input);
         assertEquals(null, bestGymEver.getInputFromUser(input));
     }
+
 }
 
