@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class BestGymEver {
 
     private List<Customer> customerList = new ArrayList<>();
@@ -72,7 +71,7 @@ public class BestGymEver {
     }
 
     public boolean didCustomerPay(Customer customer) {
-        // Parsar datum
+
         LocalDate customersLastPayment = LocalDate.parse(customer.getLastPay());
         if (dateOneYearAgo().isBefore(customersLastPayment) || dateOneYearAgo().equals(customersLastPayment)) {
             if (!test) {
@@ -98,12 +97,10 @@ public class BestGymEver {
     }
 
     public boolean saveGymVisit(Customer customer) {
-        //Try with resources
-        //Skapar ny fil för varje kund
+
         try (BufferedWriter bufferedWriter = new BufferedWriter
                 (new FileWriter("CustomerLog/" + customer.getSocialSecurityNumber() + ".txt", true))) {
 
-            //Skriver till fil
             bufferedWriter.write("Customer: " + customer.getName() + " " +
                     customer.getSocialSecurityNumber() + "\n" + LocalDate.now() + "\n" + "\n");
             return true;

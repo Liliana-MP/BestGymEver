@@ -73,7 +73,6 @@ public class BestGymEver_Test {
         assertTrue(checkDate);
     }
 
-
     @Test
     public final void didCustomerPayMoreThanOneYearAgoTest(){
         bestGymEver.test = true;
